@@ -23,14 +23,9 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private final BCryptPasswordEncoder passwordEncoder;
-    private final UserDetailsServiceImpl userDetailsService;
     private final JwtFilter jwtFilter;
 
-    public SecurityConfig(BCryptPasswordEncoder passwordEncoder,
-                          UserDetailsServiceImpl userDetailsService, JwtFilter jwtFilter) {
-        this.passwordEncoder = passwordEncoder;
-        this.userDetailsService = userDetailsService;
+    public SecurityConfig(JwtFilter jwtFilter) {
         this.jwtFilter = jwtFilter;
     }
 
