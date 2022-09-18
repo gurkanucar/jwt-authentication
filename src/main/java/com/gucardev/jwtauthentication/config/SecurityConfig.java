@@ -44,9 +44,11 @@ public class SecurityConfig {
                     auth.antMatchers("/api/user").hasAnyAuthority("ADMIN", "USER");
                     auth.anyRequest().authenticated();
                 })
+                .formLogin()
+                .and()
+                .httpBasic().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .httpBasic(withDefaults())
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
 
