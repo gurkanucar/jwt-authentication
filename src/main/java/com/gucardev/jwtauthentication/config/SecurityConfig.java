@@ -44,8 +44,7 @@ public class SecurityConfig {
                     auth.antMatchers("/api/user").hasAnyAuthority("ADMIN", "USER");
                     auth.anyRequest().authenticated();
                 })
-                .formLogin()
-                .and()
+                .formLogin().disable()
                 .httpBasic().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
