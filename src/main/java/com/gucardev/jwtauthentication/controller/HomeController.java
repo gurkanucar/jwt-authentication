@@ -1,18 +1,21 @@
 package com.gucardev.jwtauthentication.controller;
 
+import com.gucardev.jwtauthentication.dto.UserDto;
+import com.gucardev.jwtauthentication.service.AuthService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.Authentication;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashMap;
-import java.util.Map;
-
 @RestController
 @RequestMapping("/api")
 @Slf4j
+@RequiredArgsConstructor
 public class HomeController {
+
+    private final AuthService authService;
 
     @GetMapping("/public")
     public String publicEndpoint() {
@@ -35,10 +38,8 @@ public class HomeController {
     }
 
     @GetMapping("/me")
-    public Map<String, String> admin(Authentication authentication) {
-        Map<String, String> response = new HashMap<>();
-        response.put("credientals", String.format("User: %s, Role: %s", authentication.getName(), authentication.getAuthorities().toString()));
-        return response;
+    public ResponseEntity<UserDto> getMe() {
+        return ResponseEntity.ok(authService.getAuthenticatedUser());
     }
 
 }
