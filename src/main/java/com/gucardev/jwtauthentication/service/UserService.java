@@ -1,6 +1,7 @@
 package com.gucardev.jwtauthentication.service;
 
 
+import com.gucardev.jwtauthentication.dto.UserDto;
 import com.gucardev.jwtauthentication.exception.GeneralException;
 import com.gucardev.jwtauthentication.model.User;
 import com.gucardev.jwtauthentication.repository.UserRepository;
@@ -27,6 +28,14 @@ public class UserService {
     public User findUserByUsername(String username) {
         return userRepository.findByUsername(username)
                 .orElseThrow(() -> new GeneralException("user not found!", HttpStatus.NOT_FOUND));
+    }
+
+    public UserDto getUserDto(String username) {
+        var user = findUserByUsername(username);
+        return UserDto.builder()
+                .username(user.getUsername())
+                .role(user.getRole())
+                .build();
     }
 
 }
