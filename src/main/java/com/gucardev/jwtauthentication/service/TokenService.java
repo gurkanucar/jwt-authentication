@@ -35,10 +35,10 @@ public class TokenService {
                 .sign(Algorithm.HMAC256(KEY.getBytes()));
     }
 
-    ////////////////VERIFYYYYYY???????????
+
     public DecodedJWT verifyJWT(String token) {
         Algorithm algorithm = Algorithm.HMAC256(KEY.getBytes());
-        JWTVerifier verifier = JWT.require(algorithm).acceptExpiresAt(EXPIRES_ACCESS_TOKEN_MINUTE * 60).build();
+        JWTVerifier verifier = JWT.require(algorithm).acceptExpiresAt(20).build();
         try {
             return verifier.verify(token);
         } catch (Exception e) {
