@@ -1,9 +1,9 @@
 package com.gucardev.jwtauthentication.config;
 
 
+import com.gucardev.jwtauthentication.security.JWTAccessDeniedHandler;
 import com.gucardev.jwtauthentication.security.JwtFilter;
-import com.gucardev.jwtauthentication.security.RestAuthenticationEntryPoint;
-import com.gucardev.jwtauthentication.service.UserDetailsServiceImpl;
+import com.gucardev.jwtauthentication.security.JwtAuthenticationEntryPoint;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,7 +13,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -25,7 +24,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class SecurityConfig {
 
     private final JwtFilter jwtFilter;
-    private final RestAuthenticationEntryPoint authenticationEntryPoint;
+    private final JwtAuthenticationEntryPoint authenticationEntryPoint;
+    private final JWTAccessDeniedHandler accessDeniedHandler;
 
 
     @Bean
@@ -47,7 +47,9 @@ public class SecurityConfig {
                 })
                 .formLogin().disable()
                 .httpBasic().disable()
-                .exceptionHandling().authenticationEntryPoint(authenticationEntryPoint).and()
+                .exceptionHandling().accessDeniedHandler(accessDeniedHandler)
+                .authenticationEntryPoint(authenticationEntryPoint)
+                .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
