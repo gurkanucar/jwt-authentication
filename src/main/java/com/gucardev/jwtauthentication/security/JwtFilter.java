@@ -41,22 +41,19 @@ public class JwtFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String token = getToken(request);
         String username;
-        if (!token.isBlank()) {
-            try {
+        try {
+            if (!token.isBlank()) {
                 username = jwtTokenService.verifyJWT(token).getSubject();
-            } catch (Exception e) {
-                log.error("error -> " + e.getMessage());
-                sendError(response, e);
-                return;
-            }
-            if (username != null) {
                 UserDetails userDetails = jwtUserDetailsService.loadUserByUsername(username);
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
             }
+            filterChain.doFilter(request, response);
+        } catch (Exception e) {
+            log.error("error -> " + e.getMessage());
+            sendError(response, e);
         }
-        filterChain.doFilter(request, response);
     }
 
     private String getToken(HttpServletRequest request) {

@@ -30,12 +30,11 @@ public class AuthService {
             throw new GeneralException("Invalid Username or Password", HttpStatus.BAD_REQUEST);
         }
         UserDetails userDetails = userDetailsService.loadUserByUsername(loginRequest.getUsername());
-        TokenResponseDTO response = TokenResponseDTO
+        return TokenResponseDTO
                 .builder()
                 .accessToken(tokenService.generateToken(userDetails))
                 .user(userService.getUserDto(loginRequest.getUsername()))
                 .build();
-        return response;
     }
 
     public UserDto getAuthenticatedUser() {
