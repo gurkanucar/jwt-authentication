@@ -33,6 +33,7 @@ public class UserService {
     public UserDto getUserDto(String username) {
         var user = findUserByUsername(username);
         return UserDto.builder()
+                .id(user.getId())
                 .username(user.getUsername())
                 .role(user.getRole())
                 .build();
