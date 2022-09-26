@@ -24,7 +24,8 @@ public class AuthService {
 
     public TokenResponseDTO login(LoginRequest loginRequest) {
         try {
-            Authentication auth = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+            Authentication auth = authenticationManager
+                    .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
             return TokenResponseDTO
                     .builder()
                     .accessToken(tokenService.generateToken(auth))
